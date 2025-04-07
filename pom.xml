@@ -14,12 +14,6 @@
         <jackson.version>2.18.2</jackson.version>
     </properties>
 
-     <scm>
-        <connection>scm:git:git@github.com/Netcracker/qubership-core-process-orchestrator.git</connection>
-        <developerConnection>scm:git:git@github.com/Netcracker/qubership-core-process-orchestrator.git</developerConnection>
-        <url>https://github.com/Netcracker/qubership-core-process-orchestrator.git</url>
-    </scm>
-	
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -163,24 +157,76 @@
                     </execution>
                 </executions>
             </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.18.0</version>
+                </plugin>	    			
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.7.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <publishingServerId>central</publishingServerId>
+                        <autoPublish>true</autoPublish>
+                        <waitUntil>published</waitUntil>
+                    </configuration>
+                </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>3.1.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.18.0</version>
-            </plugin>			
-        </plugins>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.2.7</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>		
+                </plugins>
     </build>
-
+	
 	<distributionManagement>
             <repository>
                 <id>github</id>
                 <url>https://maven.pkg.github.com/netcracker/qubership-core-process-orchestrator</url>
             </repository>
 	</distributionManagement>
-
+    <repositories>
+        </repository>
+        <repository>
+            <id>github-nc</id>
+            <url>https://maven.pkg.github.com/netcracker/*</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>oss.sonatype.org</id>
+            <url>https://central.sonatype.com</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+	</repositories>
 </project>
