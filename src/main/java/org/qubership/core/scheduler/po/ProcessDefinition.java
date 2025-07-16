@@ -46,13 +46,15 @@ public class ProcessDefinition {
     public ProcessInstanceImpl createInstance() {
         ProcessInstanceImpl instance = new ProcessInstanceImpl(name, UUID.randomUUID().toString(), id);
         TaskInstanceRepository taskInstanceRepository = ProcessOrchestrator.getInstance().getTaskInstanceRepository();
+        List<TaskInstanceImpl> taskInstances = new ArrayList<>();
         for (Map.Entry<NamedTask, List<NamedTask>> task : graph.entrySet()) {
             TaskInstanceImpl taskInstance = new TaskInstanceImpl(UUID.randomUUID().toString(), task.getKey().getTaskName(), task.getKey().getTaskClass(), instance.getId());
             taskInstance.setTimeout(task.getKey().getSyncTimeOut());
             taskInstance.setAsyncTimeout(task.getKey().getAsyncTimeout());
             taskInstance.setDependsOn(task.getValue());
-            taskInstanceRepository.putTaskInstance(taskInstance);
+            taskInstances.add(taskInstance);
         }
+        taskInstanceRepository.addTaskInstancesBulk(taskInstances);
 
         return instance;
 
