@@ -4,12 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.kagkarlsson.jdbc.ResultSetMapper;
 import com.netcracker.core.scheduler.po.model.pojo.TaskInstanceImpl;
 import com.netcracker.core.scheduler.po.serializers.ExtendedSerializer;
-import com.netcracker.core.scheduler.po.task.NamedTask;
 import com.netcracker.core.scheduler.po.task.TaskState;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class TaskInstanceResultMapper implements ResultSetMapper<TaskInstanceImpl> {
     private final ExtendedSerializer serializer;
