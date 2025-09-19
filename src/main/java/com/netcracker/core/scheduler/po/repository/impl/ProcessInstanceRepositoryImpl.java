@@ -20,8 +20,8 @@ public class ProcessInstanceRepositoryImpl extends AbstractRepository implements
     public ProcessInstanceImpl getProcess(String id) {
         return jdbcRunner.query(
                 "select * from " +
-                        tableName +
-                        " where pi_id=?",
+                tableName +
+                " where pi_id=?",
                 (PreparedStatement p) -> p.setString(1, id),
                 new ProcessInstanceResultMapper()
         );
@@ -49,23 +49,24 @@ public class ProcessInstanceRepositoryImpl extends AbstractRepository implements
     private void updateInstance(ProcessInstanceImpl processInstance) {
         jdbcRunner.execute(
                 "update " +
-                        tableName +
-                        " set " +
-                        "   state=?," +
-                        "   start_time=?," +
-                        "   end_time=?," +
-                        "   version=?" +
-                        " where pi_id=?"
+                tableName +
+                " set " +
+                "   state=?," +
+                "   start_time=?," +
+                "   end_time=?," +
+                "   version=?" +
+                " where pi_id=?"
                 ,
                 (PreparedStatement p) -> {
                     p.setString(1, processInstance.getState().toString());
-                    if (processInstance.getStartTime() != null)
+                    if (processInstance.getStartTime() != null) {
                         p.setLong(2, processInstance.getStartTime().getTime());
-                    else
+                    } else {
                         p.setLong(2, 0L);
-                    if (processInstance.getEndTime() != null)
+                    }
+                    if (processInstance.getEndTime() != null) {
                         p.setLong(3, processInstance.getEndTime().getTime());
-                    else p.setLong(3, 0L);
+                    } else p.setLong(3, 0L);
                     p.setInt(4, processInstance.getVersion());
 
                     p.setString(5, processInstance.getId());
@@ -76,24 +77,23 @@ public class ProcessInstanceRepositoryImpl extends AbstractRepository implements
     private void insertInstance(ProcessInstanceImpl processInstance) {
         jdbcRunner.execute(
                 "insert into " +
-                        tableName +
-                        " (pi_id,name,def_id,version, state,start_time, end_time) values(?,?,?,?,?,?,?)"
+                tableName +
+                " (pi_id,name,def_id,version, state,start_time, end_time) values(?,?,?,?,?,?,?)"
                 , (PreparedStatement p) -> {
                     p.setString(1, processInstance.getId());
                     p.setString(2, processInstance.getName());
                     p.setString(3, processInstance.getProcessDefinitionID());
                     p.setInt(4, processInstance.getVersion());
                     p.setString(5, processInstance.getState().toString());
-                    if (processInstance.getStartTime() != null)
+                    if (processInstance.getStartTime() != null) {
                         p.setLong(6, processInstance.getStartTime().getTime());
-                    else
+                    } else {
                         p.setLong(6, 0L);
-                    if (processInstance.getEndTime() != null)
+                    }
+                    if (processInstance.getEndTime() != null) {
                         p.setLong(7, processInstance.getEndTime().getTime());
-                    else p.setLong(7, 0L);
+                    } else p.setLong(7, 0L);
                 }
         );
     }
-
-
 }
