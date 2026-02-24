@@ -56,3 +56,4 @@ The framework uses the following tables:
 - `po_context` - Stores context data
 - `pe_process_instance` - Stores process instances
 - `pe_task_instance` - Stores task instances
+
